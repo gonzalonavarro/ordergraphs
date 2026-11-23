@@ -120,8 +120,8 @@ def build():
             b, L = best[m, d], lb[m, d]["value"]
             cl = claimed[m, d]
             mark = (f'<a class="claimed" href="#{esc(cl["claim"]["id"])}" title="unverified claim">'
-                    f'({cl["value"]}?)</a> ' if cl else "")
-            cells.append(f'<td class="num lb">{mark}{L}</td>')
+                    f'({cl["value"]}?)</a>' if cl else "")
+            cells.append(f'<td class="num lb">{L}</td><td class="cl">{mark}</td>')
             if b is None:
                 cells.append('<td class="num">&ndash;</td><td></td>')
                 continue
@@ -136,10 +136,10 @@ def build():
     table = f"""
 <div class="scroll"><table class="summary">
 <thead>
-<tr><th rowspan="2" scope="col"><i>d</i></th><th colspan="3" scope="colgroup">Bidirectional</th>
-<th colspan="3" scope="colgroup">Unidirectional</th></tr>
-<tr><th scope="col">lower bound</th><th scope="col">best known</th><th scope="col"></th>
-<th scope="col">lower bound</th><th scope="col">best known</th><th scope="col"></th></tr>
+<tr><th rowspan="2" scope="col"><i>d</i></th><th colspan="4" scope="colgroup">Bidirectional</th>
+<th colspan="4" scope="colgroup">Unidirectional</th></tr>
+<tr><th scope="col" colspan="2" class="lbh">lower bound</th><th scope="col">best known</th><th scope="col"></th>
+<th scope="col" colspan="2" class="lbh">lower bound</th><th scope="col">best known</th><th scope="col"></th></tr>
 </thead>
 <tbody>
 {chr(10).join(rows)}
@@ -274,7 +274,9 @@ table.summary {{ border-collapse: collapse; width: 100%; margin: 16px 0; font-va
 .summary thead tr:first-child th {{ color: var(--fg); font-size: .95rem; }}
 .summary td.num {{ text-align: right; }}
 .summary td.best a {{ font-weight: 700; text-decoration: none; }}
-.summary td.lb {{ color: var(--muted); }}
+.summary td.lb {{ color: var(--muted); padding-right: 4px; }}
+.summary td.cl {{ padding-left: 0; padding-right: 14px; }}
+.summary th.lbh {{ text-align: center; }}
 .tag {{ display: inline-block; font-size: .75rem; padding: 1px 8px; border-radius: 999px;
   background: var(--best); color: var(--accent); margin-left: 8px; font-weight: 600; }}
 .tag.claim {{ background: var(--claimbg); color: var(--claim); margin-left: 0; }}
