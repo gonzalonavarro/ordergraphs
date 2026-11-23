@@ -10,8 +10,8 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null,
+  "comment": "Table 6 of the paper. The graph is the single cycle listed in Appendix D.2.",
+  "graph": "graph.txt",
   "id": "0001-bi-d3"
  },
  {
@@ -25,8 +25,8 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null,
+  "comment": "Table 6 of the paper. The graph is the single cycle listed in Appendix D.2.",
+  "graph": "graph.txt",
   "id": "0002-bi-d4"
  },
  {
@@ -40,8 +40,8 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null,
+  "comment": "Table 6 of the paper. The graph is the single cycle listed in Appendix D.2.",
+  "graph": "graph.txt",
   "id": "0003-bi-d5"
  },
  {
@@ -55,8 +55,8 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null,
+  "comment": "Table 6 of the paper. The graph is the single cycle listed in Appendix D.2.",
+  "graph": "graph.txt",
   "id": "0004-bi-d6"
  },
  {
@@ -70,8 +70,8 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null,
+  "comment": "Table 6 of the paper. The graph is the single cycle listed in Appendix D.2 (the 12 rings of Appendix D.1, of size 84, are also listed there).",
+  "graph": "graph.txt",
   "id": "0005-bi-d7"
  },
  {
@@ -85,8 +85,8 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null,
+  "comment": "Table 6 of the paper. The graph is the set of rings listed in Appendix D.1.",
+  "graph": "graph.txt",
   "id": "0006-bi-d8"
  },
  {
@@ -100,8 +100,8 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null,
+  "comment": "Table 6 of the paper. The graph is one of those in Figure 16: the rings 1,2,3 and 1,3,2.",
+  "graph": "graph.txt",
   "id": "0007-uni-d3"
  },
  {
@@ -115,7 +115,7 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "comment": "Table 6 of the paper. Only the size is given there; the appendix lists bidirectional graphs.",
   "graph": null,
   "id": "0008-uni-d4"
  },
@@ -130,7 +130,7 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "comment": "Table 6 of the paper. Only the size is given there; the appendix lists bidirectional graphs.",
   "graph": null,
   "id": "0009-uni-d5"
  },
@@ -145,7 +145,7 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "comment": "Table 6 of the paper. Only the size is given there; the appendix lists bidirectional graphs.",
   "graph": null,
   "id": "0010-uni-d6"
  },
@@ -160,7 +160,7 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "comment": "Table 6 of the paper. Only the size is given there; the appendix lists bidirectional graphs.",
   "graph": null,
   "id": "0011-uni-d7"
  },
@@ -175,7 +175,7 @@
    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "comment": "Table 6 of the paper. Only the size is given there; the appendix lists bidirectional graphs.",
   "graph": null,
   "id": "0012-uni-d8"
  },

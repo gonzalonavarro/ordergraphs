@@ -27,6 +27,19 @@
 * Si un contribuyente manda un resultado por correo, puedes crear tú mismo el issue con el
   formulario (botón *Submit a new result* de la página) y aprobarlo.
 
+## Cotas inferiores
+
+* Las cotas inferiores llegan con otro formulario ("Lower-bound claim") y la etiqueta
+  `lower-bound`. El bot no puede verificar la demostración: solo revisa que esté bien escrita, que
+  traiga una referencia o enlace, y que la cota no supere el tamaño de un grafo ya verificado (en
+  ese caso sería falsa).
+* Al aprobarla con `approved`, se publica como **unverified claim**: aparece en la sección
+  "Lower-bound claims" y en la tabla como un valor entre paréntesis con signo de interrogación,
+  sin cambiar la cota ni las marcas de "optimal".
+* Si más adelante la das por buena (por ejemplo, porque se publicó con revisión de pares), edita
+  su `claims/NNNN-.../claim.json` en GitHub y cambia `"status": "claimed"` por
+  `"status": "accepted"`. Entonces pasa a ser la cota de la tabla.
+
 Solo el dueño del repositorio puede aprobar: la etiqueta `approved` puesta por otra persona no
 tiene efecto.
 

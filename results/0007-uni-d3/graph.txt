@@ -1,0 +1,8 @@
+# complete order graph, d=3, unidirectional model, 6 edges
+# one edge per line: source order, label (target = label moved to the front)
+123 3
+132 2
+213 3
+231 1
+312 2
+321 1

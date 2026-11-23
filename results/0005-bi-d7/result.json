@@ -9,6 +9,6 @@
     "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
     "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
   },
-  "comment": "Table 6 of the paper. The graphs are not listed there.",
-  "graph": null
+  "comment": "Table 6 of the paper. The graph is the single cycle listed in Appendix D.2 (the 12 rings of Appendix D.1, of size 84, are also listed there).",
+  "graph": "graph.txt"
 }

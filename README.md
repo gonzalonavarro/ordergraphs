@@ -8,6 +8,11 @@ published from `docs/` with GitHub Pages.
 graph is verified automatically and a bot comments on the issue; once the maintainer approves it,
 it is added to the page.
 
+**To report a lower bound**, open a [lower-bound claim](../../issues/new?template=lower-bound.yml),
+with a proof or a reference. Lower bounds cannot be verified automatically: once approved, they
+are listed as unverified claims, and they are used in the table only after the maintainer marks
+them as accepted.
+
 ## Layout
 
 | Path | Contents |
@@ -15,10 +20,10 @@ it is added to the page.
 | `results/NNNN-model-dD/result.json` | One result: model, d, size, contributors, method, reference, comment. |
 | `results/NNNN-model-dD/graph.txt` | Its graph, one edge per line (`order label`). |
 | `data/site.json` | Page title, paper reference, repository name. |
-| `data/lower_bounds.json` | Lower bounds better than the formulas, with references (empty for now). |
+| `claims/NNNN-model/claim.json` | One lower-bound claim; `"status"` is `"claimed"` or `"accepted"`. |
 | `tools/ordergraph.py` | Graph parsing, completeness check, lower bounds, compact format. |
 | `tools/build_site.py` | Rebuilds `docs/` from the results, verifying every graph again. |
-| `tools/submission.py` | Checks and adds results submitted through the issue form. |
+| `tools/submission.py` | Checks and adds results and claims submitted through the issue forms. |
 | `docs/` | The generated page (do not edit by hand). |
 
 Everything uses only the Python 3 standard library. To check a graph locally:

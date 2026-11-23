@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Check a result submitted through the GitHub issue form, and add it once approved.
+"""Check a result or a lower-bound claim submitted through the GitHub issue forms, and add it
+once approved. The kind of submission is recognized from the form fields.
 
   python3 tools/submission.py check BODY_FILE REPORT_FILE
       Parses and verifies the submission; writes a Markdown report. Exit 0 if valid.
   python3 tools/submission.py add BODY_FILE ISSUE_NUMBER GITHUB_USER
-      Verifies again and writes results/NNNN-model-dD/{result.json,graph.txt}.
+      Verifies again and writes results/NNNN-model-dD/{result.json,graph.txt}, or, for a
+      lower-bound claim, claims/NNNN-model/claim.json with status "claimed".
 
 The issue body is untrusted input: it is only parsed as text, never executed.
 """
@@ -20,8 +22,10 @@ from ordergraph import (GraphError, edge_list, lower_bound, missing_requirements
                         parse_graph)
 
 FIELDS = {"Model": "model", "Dimension d": "d", "Graph": "graph", "Contributors": "contributors",
-          "Method": "method", "Reference": "reference", "Link": "url", "Comment": "comment"}
-MAXLEN = {"contributors": 300, "method": 500, "reference": 500, "url": 300, "comment": 2000}
+          "Method": "method", "Reference": "reference", "Link": "url", "Comment": "comment",
+          "Bounds": "bounds", "Statement": "statement"}
+MAXLEN = {"contributors": 300, "method": 500, "reference": 500, "url": 300, "comment": 2000,
+          "bounds": 2000, "statement": 2000}
 
 
 class SubmissionError(ValueError):
@@ -85,8 +89,99 @@ def validate(raw):
     return model, d, E, missing
 
 
+def validate_claim(raw):
+    m = raw.get("model", "").lower()
+    model = "both" if m.startswith("both") else "bi" if m.startswith("bi") else \
+        "uni" if m.startswith("uni") else None
+    if model is None:
+        raise SubmissionError("the model must be Bidirectional, Unidirectional, or Both")
+    bounds = {}
+    text = re.sub(r"^```\w*\s*$", "", raw.get("bounds", ""), flags=re.M)
+    for line in text.split("\n"):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        mm = re.fullmatch(r"(?:d\s*=\s*)?(\d+)\s*[:,\s]\s*(?:>=|≥)?\s*(\d+)", line)
+        if not mm:
+            raise SubmissionError(f"cannot read the bound line {line[:60]!r}; write 'd value', e.g. '7 72'")
+        d, v = int(mm.group(1)), int(mm.group(2))
+        if not 3 <= d <= 30:
+            raise SubmissionError(f"d = {d} is out of range (3 to 30)")
+        bounds[d] = v
+    if not bounds:
+        raise SubmissionError("please list at least one bound, as 'd value' per line")
+    if not raw.get("contributors", "").strip():
+        raise SubmissionError("please give the name of the contributors")
+    if not (raw.get("reference", "").strip() or raw.get("url", "").strip()):
+        raise SubmissionError("please give a proof, a reference, or a link to one")
+    for k, n in MAXLEN.items():
+        if len(raw.get(k, "")) > n:
+            raise SubmissionError(f"the field '{k}' is too long (at most {n} characters)")
+    url = raw.get("url", "").strip()
+    if url and not re.match(r"^https?://\S+$", url):
+        raise SubmissionError("the link must be a single http(s) URL")
+    notes = []
+    models = ["bi", "uni"] if model == "both" else [model]
+    for mo in models:
+        name = "unidirectional" if mo == "uni" else "bidirectional"
+        for d, v in sorted(bounds.items()):
+            best = best_known(mo, d)
+            if best is not None and v > best:
+                raise SubmissionError(f"the claimed bound {v} for d = {d} ({name}) exceeds the size of a "
+                                      f"verified complete order graph, {best}, so it cannot be a lower bound")
+            lb = lower_bound(mo, d)
+            if v <= lb:
+                notes.append(f"d = {d} ({name}): {v} does not improve the proven bound {lb}.")
+            else:
+                notes.append(f"d = {d} ({name}): {v} improves the proven bound {lb}"
+                             + (f"; best known graph {best}." if best else "."))
+    return model, bounds, notes
+
+
+def check_claim(raw, report_file):
+    lines, ok = [], False
+    try:
+        model, bounds, notes = validate_claim(raw)
+        ok = True
+        lines.append("✅ The claim is well formed and consistent with the verified graphs. Lower bounds "
+                     "cannot be checked automatically; once approved, it will be listed as an "
+                     "**unverified claim**.")
+        lines += [""] + [f"* {n}" for n in notes]
+    except SubmissionError as e:
+        lines.append(f"❌ The claim could not be accepted: {e}.")
+        lines.append("\nYou can edit the issue to fix it; it will be checked again.")
+    open(report_file, "w", encoding="utf-8").write("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return 0 if ok else 1
+
+
+def add_claim(raw, issue, user):
+    model, bounds, _ = validate_claim(raw)
+    cdir = os.path.join(ROOT, "claims")
+    os.makedirs(cdir, exist_ok=True)
+    n = 1 + max([int(x[:4]) for x in os.listdir(cdir) if x[:4].isdigit()] or [0])
+    cid = f"{n:04d}-{model}"
+    os.makedirs(os.path.join(cdir, cid))
+    ref_text = raw.get("reference", "").strip()
+    url = raw.get("url", "").strip()
+    rec = {"model": model, "bounds": {str(d): v for d, v in sorted(bounds.items())},
+           "statement": raw.get("statement", "").strip(),
+           "contributors": raw["contributors"].strip(),
+           "reference": {"text": ref_text or url, "url": url},
+           "comment": raw.get("comment", "").strip(),
+           "date": datetime.date.today().isoformat(),
+           "status": "claimed",
+           "submission": {"issue": int(issue), "user": user}}
+    json.dump(rec, open(os.path.join(cdir, cid, "claim.json"), "w", encoding="utf-8"),
+              indent=2, ensure_ascii=False)
+    print(cid)
+    return cid
+
+
 def check(body_file, report_file):
     raw = parse_body(open(body_file, encoding="utf-8").read())
+    if "bounds" in raw:
+        return check_claim(raw, report_file)
     lines = []
     ok = False
     try:
@@ -124,6 +219,8 @@ def check(body_file, report_file):
 
 def add(body_file, issue, user):
     raw = parse_body(open(body_file, encoding="utf-8").read())
+    if "bounds" in raw:
+        return add_claim(raw, issue, user)
     model, d, E, missing = validate(raw)
     if missing:
         raise SubmissionError("the graph is not complete")

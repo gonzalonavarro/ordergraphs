@@ -49,26 +49,63 @@ def load():
     return results
 
 
+def load_claims():
+    """Lower-bound claims: claims/NNNN-*/claim.json, with status "claimed" or "accepted"."""
+    claims = []
+    cdir = os.path.join(ROOT, "claims")
+    if not os.path.isdir(cdir):
+        return claims
+    for cid in sorted(os.listdir(cdir)):
+        path = os.path.join(cdir, cid, "claim.json")
+        if os.path.isfile(path):
+            c = json.load(open(path, encoding="utf-8"))
+            c["id"] = cid
+            c["bounds"] = {int(k): int(v) for k, v in c.get("bounds", {}).items()}
+            claims.append(c)
+    return claims
+
+
+def claim_models(c):
+    return ["bi", "uni"] if c["model"] == "both" else [c["model"]]
+
+
 def build():
     site = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8"))
-    lbx = json.load(open(os.path.join(ROOT, "data", "lower_bounds.json"), encoding="utf-8"))
     results = load()
+    claims = load_claims()
     out = os.path.join(ROOT, "docs")
     gdir = os.path.join(out, "graphs")
     shutil.rmtree(gdir, ignore_errors=True)
     os.makedirs(gdir)
 
     dmax = max([site.get("dmax", 9)] + [r["d"] for r in results])
+    # proven lower bound: the formula, or a larger bound from an accepted claim;
+    # claimed: the largest bound from an unverified claim, if larger than the proven one
+    proven, claimed = {}, {}
+    for m in MODELS:
+        for d in range(3, dmax + 1):
+            proven[m, d] = {"value": lower_bound(m, d), "claim": None}
+            claimed[m, d] = None
+    for c in claims:
+        for m in claim_models(c):
+            for d, v in c["bounds"].items():
+                if (m, d) not in proven:
+                    continue
+                if c.get("status") == "accepted":
+                    if v > proven[m, d]["value"]:
+                        proven[m, d] = {"value": v, "claim": c}
+                elif claimed[m, d] is None or v > claimed[m, d]["value"]:
+                    claimed[m, d] = {"value": v, "claim": c}
+    for key in claimed:
+        if claimed[key] and claimed[key]["value"] <= proven[key]["value"]:
+            claimed[key] = None
     best, lb = {}, {}
     for m in MODELS:
         for d in range(3, dmax + 1):
             cand = [r for r in results if r["model"] == m and r["d"] == d]
             # best = smallest size; among ties, the earliest one (smallest id)
             best[m, d] = min(cand, key=lambda r: (r["edges"], r["id"])) if cand else None
-            extra = lbx.get(m, {}).get(str(d))
-            lb[m, d] = ({"value": extra["value"], "reference": extra.get("reference")}
-                        if extra and extra["value"] > lower_bound(m, d)
-                        else {"value": lower_bound(m, d), "reference": None})
+            lb[m, d] = proven[m, d]
 
     for r in results:
         if r.get("_edges"):
@@ -81,7 +118,10 @@ def build():
         cells = [f'<th scope="row">{d}</th>']
         for m in MODELS:
             b, L = best[m, d], lb[m, d]["value"]
-            cells.append(f'<td class="num lb">{L}</td>')
+            cl = claimed[m, d]
+            mark = (f'<a class="claimed" href="#{esc(cl["claim"]["id"])}" title="unverified claim">'
+                    f'({cl["value"]}?)</a> ' if cl else "")
+            cells.append(f'<td class="num lb">{mark}{L}</td>')
             if b is None:
                 cells.append('<td class="num">&ndash;</td><td></td>')
                 continue
@@ -147,19 +187,48 @@ def build():
 </li>""")
             L = lb[m, d]
             lbref = ""
-            if L["reference"]:
-                lbref = f' ({link(L["reference"].get("text", "reference"), L["reference"].get("url"))})'
+            if L["claim"]:
+                lbref = f' (<a href="#{esc(L["claim"]["id"])}">accepted claim</a>)'
+            if claimed[m, d]:
+                cl = claimed[m, d]
+                lbref += (f'; claimed {cl["value"]} '
+                          f'(<a href="#{esc(cl["claim"]["id"])}">unverified</a>)')
             blocks.append(f"""<section class="cell" id="{m}-d{d}">
 <h3><i>d</i> = {d} <span class="muted">&middot; lower bound {L['value']}{lbref}</span></h3>
 <ul class="entries">{''.join(items)}</ul>
 </section>""")
         sections.append(f'<h2 id="{m}">{mname} model</h2>' + "".join(blocks))
 
+    citems = []
+    for c in sorted(claims, key=lambda c: c["id"], reverse=True):
+        acc = c.get("status") == "accepted"
+        badge = ('<span class="tag opt">accepted</span>' if acc
+                 else '<span class="tag claim">unverified claim</span>')
+        mname = {"bi": "bidirectional", "uni": "unidirectional", "both": "both models"}[c["model"]]
+        bl = ", ".join(f"<i>d</i>&nbsp;=&nbsp;{d}: &ge;&nbsp;{v}" for d, v in sorted(c["bounds"].items()))
+        ref = c.get("reference") or {}
+        body = [f'<p><b>Bounds ({mname}).</b> {bl}</p>']
+        if c.get("statement"):
+            body.append(f'<p><b>Statement.</b> {esc(c["statement"])}</p>')
+        if ref.get("text") or ref.get("url"):
+            body.append(f'<p><b>Proof.</b> {link(ref.get("text") or ref.get("url"), ref.get("url"))}</p>')
+        if c.get("comment"):
+            body.append(f'<p><b>Comment.</b> {esc(c["comment"])}</p>')
+        citems.append(f"""<li class="entry" id="{esc(c['id'])}">
+<div class="head">{badge}<span class="who">{esc(c.get('contributors'))}</span>
+<span class="when">{esc(c.get('date'))}</span></div>
+{''.join(body)}
+</li>""")
+    claims_html = (f'<ul class="entries">{"".join(citems)}</ul>' if citems
+                   else '<p class="muted">No claims so far.</p>')
+
     repo = site.get("repository", "")
     submit = f"https://github.com/{repo}/issues/new?template=new-result.yml"
+    submit_lb = f"https://github.com/{repo}/issues/new?template=lower-bound.yml"
     paper = site.get("paper", {})
     page = TEMPLATE.format(
-        title=esc(site["title"]), table=table, sections="".join(sections),
+        title=esc(site["title"]), table=table, sections="".join(sections), claims=claims_html,
+        submit_lb=esc(submit_lb),
         paper=link(paper.get("text", ""), paper.get("url")), submit=esc(submit),
         repo=esc(f"https://github.com/{repo}"),
         maintainer=link(site.get("maintainer", ""), site.get("maintainer_url")))
@@ -168,7 +237,7 @@ def build():
     data = [{k: v for k, v in r.items() if not k.startswith("_")} for r in results]
     json.dump(data, open(os.path.join(out, "results.json"), "w", encoding="utf-8"),
               indent=1, ensure_ascii=False)
-    print(f"built docs/ with {len(results)} results")
+    print(f"built docs/ with {len(results)} results and {len(claims)} lower-bound claims")
 
 
 TEMPLATE = """<!doctype html>
@@ -180,11 +249,11 @@ TEMPLATE = """<!doctype html>
 <style>
 :root {{
   --bg: #fbfaf7; --fg: #1d1d1b; --muted: #6b6a66; --line: #e3e0d8; --card: #ffffff;
-  --accent: #1f5f8b; --best: #eef5fa; --opt: #2f7d4f; --optbg: #e6f3ea;
+  --accent: #1f5f8b; --best: #eef5fa; --opt: #2f7d4f; --optbg: #e6f3ea; --claim: #9a5b00; --claimbg: #fbf0dc;
 }}
 @media (prefers-color-scheme: dark) {{
   :root {{ --bg: #16171a; --fg: #e8e6e1; --muted: #9c9a94; --line: #2d2f34; --card: #1d1f23;
-    --accent: #7db7e0; --best: #1c2a35; --opt: #7fcf9b; --optbg: #1d3326; }}
+    --accent: #7db7e0; --best: #1c2a35; --opt: #7fcf9b; --optbg: #1d3326; --claim: #e5b567; --claimbg: #3a2e17; }}
 }}
 * {{ box-sizing: border-box; }}
 body {{ margin: 0; background: var(--bg); color: var(--fg);
@@ -208,6 +277,10 @@ table.summary {{ border-collapse: collapse; width: 100%; margin: 16px 0; font-va
 .summary td.lb {{ color: var(--muted); }}
 .tag {{ display: inline-block; font-size: .75rem; padding: 1px 8px; border-radius: 999px;
   background: var(--best); color: var(--accent); margin-left: 8px; font-weight: 600; }}
+.tag.claim {{ background: var(--claimbg); color: var(--claim); margin-left: 0; }}
+a.claimed {{ color: var(--claim); font-size: .85rem; text-decoration: none; }}
+.button.secondary {{ background: transparent; color: var(--accent); border: 1px solid var(--accent); }}
+.entry .head .tag {{ margin-left: 0; }}
 .tag.opt {{ background: var(--optbg); color: var(--opt); margin-left: 0; }}
 .gap {{ font-size: .85rem; color: var(--muted); }}
 ul.entries {{ list-style: none; padding: 0; margin: 0; }}
@@ -240,16 +313,25 @@ worst-case optimal joins in every attribute order; their number of edges is the 
 tracks the smallest complete order graphs known.</p>
 <p>Background and lower bounds: {paper}</p>
 <nav><a href="#bi">Bidirectional results</a><a href="#uni">Unidirectional results</a>
-<a href="#format">Graph format</a><a href="#contribute">Contribute</a></nav>
+<a href="#claims">Lower-bound claims</a><a href="#format">Graph format</a><a href="#contribute">Contribute</a></nav>
 
 <h2 id="summary">Current best sizes</h2>
 {table}
 <p class="muted">Lower bounds: max<sub><i>m</i></sub> C(<i>d</i>,<i>m</i>)&lceil;<i>m</i>/2&rceil; (bidirectional) and
-<i>d</i>&middot;C(<i>d</i>&minus;1,&lfloor;(<i>d</i>&minus;1)/2&rfloor;) (unidirectional), unless a better bound is
-referenced below. A size is marked optimal when it matches the lower bound. Every listed graph has been checked
-mechanically for completeness.</p>
+<i>d</i>&middot;C(<i>d</i>&minus;1,&lfloor;(<i>d</i>&minus;1)/2&rfloor;) (unidirectional), unless a larger bound has
+been accepted. A value in parentheses with a question mark is a larger bound that has been
+<a href="#claims">claimed but not verified</a>. A size is marked optimal when it matches the proven lower bound. Every
+listed graph has been checked mechanically for completeness.</p>
 
 {sections}
+
+<h2 id="claims">Lower-bound claims</h2>
+<p>Lower bounds cannot be checked mechanically, so claims are listed here as they are received, marked as
+<span class="tag claim">unverified claim</span>, and only used in the table once they have been
+<span class="tag opt">accepted</span> (for example, after peer review or a check by the maintainer). The only
+automatic check is that a claimed bound does not exceed the size of a verified graph.</p>
+{claims}
+<p><a class="button secondary" href="{submit_lb}">Submit a lower-bound claim</a></p>
 
 <h2 id="format">Graph format</h2>
 <p>Each graph can be downloaded as an edge list: one edge per line, written as the source order and the label,
@@ -277,7 +359,7 @@ Paste the graph in either format above, and add your name, the method, and optio
 comment. The graph is checked automatically within a few minutes, and the result appears here once the
 maintainer approves it.</p>
 <p><a class="button" href="{submit}">Submit a new result</a></p>
-<p class="muted">Improved lower bounds can be reported through the same repository, with a proof or reference.</p>
+<p class="muted">Lower bounds are submitted separately; see <a href="#claims">lower-bound claims</a>.</p>
 
 <footer>Maintained by {maintainer}. Data and code: <a href="{repo}">{repo}</a>.</footer>
 </main>
