@@ -1,0 +1,11 @@
+{
+  "model": "bi",
+  "d": 5,
+  "edges": 20,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt"
+}

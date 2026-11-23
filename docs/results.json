@@ -1,0 +1,350 @@
+[
+ {
+  "model": "bi",
+  "d": 3,
+  "edges": 3,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0001-bi-d3"
+ },
+ {
+  "model": "bi",
+  "d": 4,
+  "edges": 8,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0002-bi-d4"
+ },
+ {
+  "model": "bi",
+  "d": 5,
+  "edges": 20,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0003-bi-d5"
+ },
+ {
+  "model": "bi",
+  "d": 6,
+  "edges": 42,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0004-bi-d6"
+ },
+ {
+  "model": "bi",
+  "d": 7,
+  "edges": 83,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0005-bi-d7"
+ },
+ {
+  "model": "bi",
+  "d": 8,
+  "edges": 200,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0006-bi-d8"
+ },
+ {
+  "model": "uni",
+  "d": 3,
+  "edges": 6,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0007-uni-d3"
+ },
+ {
+  "model": "uni",
+  "d": 4,
+  "edges": 15,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0008-uni-d4"
+ },
+ {
+  "model": "uni",
+  "d": 5,
+  "edges": 33,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0009-uni-d5"
+ },
+ {
+  "model": "uni",
+  "d": 6,
+  "edges": 66,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0010-uni-d6"
+ },
+ {
+  "model": "uni",
+  "d": 7,
+  "edges": 162,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0011-uni-d7"
+ },
+ {
+  "model": "uni",
+  "d": 8,
+  "edges": 360,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+   "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+   "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null,
+  "id": "0012-uni-d8"
+ },
+ {
+  "model": "bi",
+  "d": 3,
+  "edges": 3,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0013-bi-d3"
+ },
+ {
+  "model": "bi",
+  "d": 4,
+  "edges": 8,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0014-bi-d4"
+ },
+ {
+  "model": "bi",
+  "d": 5,
+  "edges": 20,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0015-bi-d5"
+ },
+ {
+  "model": "bi",
+  "d": 6,
+  "edges": 40,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "The graph of Figure 1 of the paper.",
+  "graph": "graph.txt",
+  "id": "0016-bi-d6"
+ },
+ {
+  "model": "bi",
+  "d": 7,
+  "edges": 77,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "ILP with Gurobi's large neighborhood search, warm-started from branch and bound",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0017-bi-d7"
+ },
+ {
+  "model": "bi",
+  "d": 8,
+  "edges": 187,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "ILP with Gurobi's large neighborhood search, warm-started from branch and bound",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0018-bi-d8"
+ },
+ {
+  "model": "bi",
+  "d": 9,
+  "edges": 406,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Connection-aware greedy heuristic on the De Bruijn graph",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0019-bi-d9"
+ },
+ {
+  "model": "uni",
+  "d": 3,
+  "edges": 6,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0020-uni-d3"
+ },
+ {
+  "model": "uni",
+  "d": 4,
+  "edges": 12,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0021-uni-d4"
+ },
+ {
+  "model": "uni",
+  "d": 5,
+  "edges": 30,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0022-uni-d5"
+ },
+ {
+  "model": "uni",
+  "d": 6,
+  "edges": 60,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (HiGHS); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0023-uni-d6"
+ },
+ {
+  "model": "uni",
+  "d": 7,
+  "edges": 140,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Exact ILP on distinct tails (Gurobi branch and bound); optimal",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0024-uni-d7"
+ },
+ {
+  "model": "uni",
+  "d": 8,
+  "edges": 297,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "ILP with Gurobi's large neighborhood search, warm-started from branch and bound",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0025-uni-d8"
+ },
+ {
+  "model": "uni",
+  "d": 9,
+  "edges": 656,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Connection-aware greedy heuristic on the De Bruijn graph",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt",
+  "id": "0026-uni-d9"
+ }
+]

@@ -1,0 +1,11 @@
+{
+  "model": "bi",
+  "d": 8,
+  "edges": 187,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "ILP with Gurobi's large neighborhood search, warm-started from branch and bound",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt"
+}

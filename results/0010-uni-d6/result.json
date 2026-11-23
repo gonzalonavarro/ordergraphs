@@ -1,0 +1,14 @@
+{
+  "model": "uni",
+  "d": 6,
+  "edges": 66,
+  "date": "2024",
+  "contributors": "Arroyuelo et al.",
+  "method": "Exhaustive or heuristic search over unions of rings and single cycles",
+  "reference": {
+    "text": "D. Arroyuelo, A. Gómez-Brandón, A. Hogan, G. Navarro, J. L. Reutter, J. Rojas-Ledesma, and A. Soto. The Ring: Worst-Case Optimal Joins in Graph Databases using (Almost) No Extra Space. ACM Transactions on Database Systems 49(2), article 5, 2024.",
+    "url": "https://users.dcc.uchile.cl/~gnavarro/abstracts/tods24.html"
+  },
+  "comment": "Table 6 of the paper. The graphs are not listed there.",
+  "graph": null
+}

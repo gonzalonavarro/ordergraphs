@@ -1,0 +1,11 @@
+{
+  "title": "Complete Order Graphs: Best Known Sizes",
+  "maintainer": "Gonzalo Navarro",
+  "maintainer_url": "https://users.dcc.uchile.cl/~gnavarro/",
+  "repository": "gonzalonavarro/ordergraphs",
+  "paper": {
+    "text": "R. Becker, A. Gómez-Brandón, G. Navarro, and N. Prezza. Tight Asymptotic Bounds on the Size of Order Graphs. arXiv, 2026.",
+    "url": "https://arxiv.org/abs/2610.39311"
+  },
+  "dmax": 9
+}

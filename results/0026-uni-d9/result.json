@@ -1,0 +1,11 @@
+{
+  "model": "uni",
+  "d": 9,
+  "edges": 656,
+  "date": "2026-11",
+  "contributors": "Ruben Becker, Adrián Gómez-Brandón, Gonzalo Navarro, Nicola Prezza",
+  "method": "Connection-aware greedy heuristic on the De Bruijn graph",
+  "reference": "paper",
+  "comment": "",
+  "graph": "graph.txt"
+}
