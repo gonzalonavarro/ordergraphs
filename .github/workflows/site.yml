@@ -1,0 +1,138 @@
+# All the automation of the site, in one file.
+#   check   - verifies a submitted result (new or edited issue labeled new-result) and comments.
+#             Limits: 5 minutes per run, at most 5 submissions per person in 24 hours (owner exempt),
+#             and a newer edit of the same issue cancels the older run.
+#   add     - when the repository owner labels a submission "approved": verifies it again, adds it
+#             to results/, rebuilds the page, and closes the issue.
+#   build   - rebuilds docs/ after direct edits of results/, data/, or tools/.
+#   labels  - creates the labels; run it once from the Actions tab ("Run workflow").
+name: Site
+on:
+  issues:
+    types: [opened, edited, labeled]
+  push:
+    branches: [main]
+    paths: ["results/**", "data/**", "tools/**"]
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+jobs:
+  check:
+    if: >-
+      github.event_name == 'issues' &&
+      (github.event.action == 'opened' || github.event.action == 'edited') &&
+      contains(github.event.issue.labels.*.name, 'new-result') &&
+      github.event.issue.state == 'open'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: check-${{ github.event.issue.number }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rate limit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          if [ "$AUTHOR" = "$OWNER" ]; then echo "LIMITED=0" >> "$GITHUB_ENV"; exit 0; fi
+          since=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          n=$(gh issue list --repo "$GITHUB_REPOSITORY" --author "$AUTHOR" --label new-result \
+                --state all --search "created:>=$since" --json number --jq length)
+          echo "submissions in the last 24 hours: $n"
+          if [ "$n" -gt 5 ]; then echo "LIMITED=1" >> "$GITHUB_ENV"; else echo "LIMITED=0" >> "$GITHUB_ENV"; fi
+      - name: Verify the graph
+        if: env.LIMITED == '0'
+        env:
+          BODY: ${{ github.event.issue.body }}
+        run: |
+          printf '%s' "$BODY" > body.md
+          if timeout 240 python3 tools/submission.py check body.md report.md; then
+            echo "VALID=1" >> "$GITHUB_ENV"
+          else
+            echo "VALID=0" >> "$GITHUB_ENV"
+            [ -s report.md ] || echo "❌ The graph could not be checked within the time limit." > report.md
+          fi
+      - name: Comment and label
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          if [ "$LIMITED" = 1 ]; then
+            gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body "⏳ This account has submitted more than 5 results in the last 24 hours, so this one was not checked automatically. The maintainer will look at it, or you can edit the issue later to trigger the check again."
+            exit 0
+          fi
+          gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file report.md
+          if [ "$VALID" = 1 ]; then
+            gh issue edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --add-label verified --remove-label invalid || true
+          else
+            gh issue edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --add-label invalid --remove-label verified || true
+          fi
+
+  add:
+    if: >-
+      github.event_name == 'issues' && github.event.action == 'labeled' &&
+      github.event.label.name == 'approved' &&
+      github.event.sender.login == github.repository_owner &&
+      contains(github.event.issue.labels.*.name, 'new-result')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: site
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add the result and rebuild the page
+        env:
+          BODY: ${{ github.event.issue.body }}
+          NUMBER: ${{ github.event.issue.number }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+        run: |
+          printf '%s' "$BODY" > "$RUNNER_TEMP/body.md"
+          python3 tools/submission.py add "$RUNNER_TEMP/body.md" "$NUMBER" "$AUTHOR"
+          python3 tools/build_site.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results docs
+          git commit -m "Add result from issue #$NUMBER"
+          git push
+      - name: Close the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --comment "Approved and added to the page. Thank you!"
+
+  build:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: site
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/build_site.py
+      - name: Commit the page if it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git diff --cached --quiet || (git commit -m "Rebuild page" && git push)
+
+  labels:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create new-result --color 1f5f8b --description "Result submitted through the form" --force --repo "$GITHUB_REPOSITORY"
+          gh label create verified   --color 2f7d4f --description "Graph checked: complete" --force --repo "$GITHUB_REPOSITORY"
+          gh label create invalid    --color b60205 --description "Graph could not be verified" --force --repo "$GITHUB_REPOSITORY"
+          gh label create approved   --color 0e8a16 --description "Maintainer: add this result to the page" --force --repo "$GITHUB_REPOSITORY"
