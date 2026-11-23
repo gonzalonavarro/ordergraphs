@@ -1,9 +1,10 @@
 # All the automation of the site, in one file.
-#   check   - verifies a submitted result (new or edited issue labeled new-result) and comments.
+#   check   - verifies a submitted result (issue labeled new-result) or checks that a lower-bound
+#             claim (issue labeled lower-bound) is well formed, and comments.
 #             Limits: 5 minutes per run, at most 5 submissions per person in 24 hours (owner exempt),
 #             and a newer edit of the same issue cancels the older run.
-#   add     - when the repository owner labels a submission "approved": verifies it again, adds it
-#             to results/, rebuilds the page, and closes the issue.
+#   add     - when the repository owner labels a submission "approved": checks it again, adds it
+#             to results/ or claims/, rebuilds the page, and closes the issue.
 #   build   - rebuilds docs/ after direct edits of results/, data/, or tools/.
 #   labels  - creates the labels; run it once from the Actions tab ("Run workflow").
 name: Site
@@ -12,7 +13,7 @@ on:
     types: [opened, edited, labeled]
   push:
     branches: [main]
-    paths: ["results/**", "data/**", "tools/**"]
+    paths: ["results/**", "claims/**", "data/**", "tools/**"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -22,7 +23,8 @@ jobs:
     if: >-
       github.event_name == 'issues' &&
       (github.event.action == 'opened' || github.event.action == 'edited') &&
-      contains(github.event.issue.labels.*.name, 'new-result') &&
+      (contains(github.event.issue.labels.*.name, 'new-result') ||
+       contains(github.event.issue.labels.*.name, 'lower-bound')) &&
       github.event.issue.state == 'open'
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -42,8 +44,12 @@ jobs:
         run: |
           if [ "$AUTHOR" = "$OWNER" ]; then echo "LIMITED=0" >> "$GITHUB_ENV"; exit 0; fi
           since=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
-          n=$(gh issue list --repo "$GITHUB_REPOSITORY" --author "$AUTHOR" --label new-result \
-                --state all --search "created:>=$since" --json number --jq length)
+          n=0
+          for l in new-result lower-bound; do
+            k=$(gh issue list --repo "$GITHUB_REPOSITORY" --author "$AUTHOR" --label "$l" \
+                  --state all --search "created:>=$since" --json number --jq length)
+            n=$((n + k))
+          done
           echo "submissions in the last 24 hours: $n"
           if [ "$n" -gt 5 ]; then echo "LIMITED=1" >> "$GITHUB_ENV"; else echo "LIMITED=0" >> "$GITHUB_ENV"; fi
       - name: Verify the graph
@@ -79,7 +85,8 @@ jobs:
       github.event_name == 'issues' && github.event.action == 'labeled' &&
       github.event.label.name == 'approved' &&
       github.event.sender.login == github.repository_owner &&
-      contains(github.event.issue.labels.*.name, 'new-result')
+      (contains(github.event.issue.labels.*.name, 'new-result') ||
+       contains(github.event.issue.labels.*.name, 'lower-bound'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     concurrency:
@@ -98,7 +105,8 @@ jobs:
           python3 tools/build_site.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results docs
+          mkdir -p claims
+          git add results claims docs
           git commit -m "Add result from issue #$NUMBER"
           git push
       - name: Close the issue
@@ -135,4 +143,5 @@ jobs:
           gh label create new-result --color 1f5f8b --description "Result submitted through the form" --force --repo "$GITHUB_REPOSITORY"
           gh label create verified   --color 2f7d4f --description "Graph checked: complete" --force --repo "$GITHUB_REPOSITORY"
           gh label create invalid    --color b60205 --description "Graph could not be verified" --force --repo "$GITHUB_REPOSITORY"
+          gh label create lower-bound --color 9a5b00 --description "Lower-bound claim submitted through the form" --force --repo "$GITHUB_REPOSITORY"
           gh label create approved   --color 0e8a16 --description "Maintainer: add this result to the page" --force --repo "$GITHUB_REPOSITORY"
