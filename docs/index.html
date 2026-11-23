@@ -32,7 +32,9 @@ table.summary { border-collapse: collapse; width: 100%; margin: 16px 0; font-var
 .summary thead tr:first-child th { color: var(--fg); font-size: .95rem; }
 .summary td.num { text-align: right; }
 .summary td.best a { font-weight: 700; text-decoration: none; }
-.summary td.lb { color: var(--muted); }
+.summary td.lb { color: var(--muted); padding-right: 4px; }
+.summary td.cl { padding-left: 0; padding-right: 14px; }
+.summary th.lbh { text-align: center; }
 .tag { display: inline-block; font-size: .75rem; padding: 1px 8px; border-radius: 999px;
   background: var(--best); color: var(--accent); margin-left: 8px; font-weight: 600; }
 .tag.claim { background: var(--claimbg); color: var(--claim); margin-left: 0; }
@@ -77,19 +79,19 @@ tracks the smallest complete order graphs known.</p>
 
 <div class="scroll"><table class="summary">
 <thead>
-<tr><th rowspan="2" scope="col"><i>d</i></th><th colspan="3" scope="colgroup">Bidirectional</th>
-<th colspan="3" scope="colgroup">Unidirectional</th></tr>
-<tr><th scope="col">lower bound</th><th scope="col">best known</th><th scope="col"></th>
-<th scope="col">lower bound</th><th scope="col">best known</th><th scope="col"></th></tr>
+<tr><th rowspan="2" scope="col"><i>d</i></th><th colspan="4" scope="colgroup">Bidirectional</th>
+<th colspan="4" scope="colgroup">Unidirectional</th></tr>
+<tr><th scope="col" colspan="2" class="lbh">lower bound</th><th scope="col">best known</th><th scope="col"></th>
+<th scope="col" colspan="2" class="lbh">lower bound</th><th scope="col">best known</th><th scope="col"></th></tr>
 </thead>
 <tbody>
-<tr><th scope="row">3</th><td class="num lb">3</td><td class="num best"><a href="#0001-bi-d3">3</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">6</td><td class="num best"><a href="#0007-uni-d3">6</a></td><td><span class="tag opt">optimal</span></td></tr>
-<tr><th scope="row">4</th><td class="num lb">8</td><td class="num best"><a href="#0002-bi-d4">8</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">12</td><td class="num best"><a href="#0021-uni-d4">12</a></td><td><span class="tag opt">optimal</span></td></tr>
-<tr><th scope="row">5</th><td class="num lb">20</td><td class="num best"><a href="#0003-bi-d5">20</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">30</td><td class="num best"><a href="#0022-uni-d5">30</a></td><td><span class="tag opt">optimal</span></td></tr>
-<tr><th scope="row">6</th><td class="num lb">40</td><td class="num best"><a href="#0016-bi-d6">40</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">60</td><td class="num best"><a href="#0023-uni-d6">60</a></td><td><span class="tag opt">optimal</span></td></tr>
-<tr><th scope="row">7</th><td class="num lb">70</td><td class="num best"><a href="#0017-bi-d7">77</a></td><td><span class="gap">+10.0%</span></td><td class="num lb">140</td><td class="num best"><a href="#0024-uni-d7">140</a></td><td><span class="tag opt">optimal</span></td></tr>
-<tr><th scope="row">8</th><td class="num lb">168</td><td class="num best"><a href="#0018-bi-d8">187</a></td><td><span class="gap">+11.3%</span></td><td class="num lb">280</td><td class="num best"><a href="#0025-uni-d8">297</a></td><td><span class="gap">+6.1%</span></td></tr>
-<tr><th scope="row">9</th><td class="num lb">378</td><td class="num best"><a href="#0019-bi-d9">406</a></td><td><span class="gap">+7.4%</span></td><td class="num lb">630</td><td class="num best"><a href="#0026-uni-d9">656</a></td><td><span class="gap">+4.1%</span></td></tr>
+<tr><th scope="row">3</th><td class="num lb">3</td><td class="cl"></td><td class="num best"><a href="#0001-bi-d3">3</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">6</td><td class="cl"></td><td class="num best"><a href="#0007-uni-d3">6</a></td><td><span class="tag opt">optimal</span></td></tr>
+<tr><th scope="row">4</th><td class="num lb">8</td><td class="cl"></td><td class="num best"><a href="#0002-bi-d4">8</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">12</td><td class="cl"></td><td class="num best"><a href="#0021-uni-d4">12</a></td><td><span class="tag opt">optimal</span></td></tr>
+<tr><th scope="row">5</th><td class="num lb">20</td><td class="cl"></td><td class="num best"><a href="#0003-bi-d5">20</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">30</td><td class="cl"></td><td class="num best"><a href="#0022-uni-d5">30</a></td><td><span class="tag opt">optimal</span></td></tr>
+<tr><th scope="row">6</th><td class="num lb">40</td><td class="cl"></td><td class="num best"><a href="#0016-bi-d6">40</a></td><td><span class="tag opt">optimal</span></td><td class="num lb">60</td><td class="cl"></td><td class="num best"><a href="#0023-uni-d6">60</a></td><td><span class="tag opt">optimal</span></td></tr>
+<tr><th scope="row">7</th><td class="num lb">70</td><td class="cl"></td><td class="num best"><a href="#0017-bi-d7">77</a></td><td><span class="gap">+10.0%</span></td><td class="num lb">140</td><td class="cl"></td><td class="num best"><a href="#0024-uni-d7">140</a></td><td><span class="tag opt">optimal</span></td></tr>
+<tr><th scope="row">8</th><td class="num lb">168</td><td class="cl"></td><td class="num best"><a href="#0018-bi-d8">187</a></td><td><span class="gap">+11.3%</span></td><td class="num lb">280</td><td class="cl"></td><td class="num best"><a href="#0025-uni-d8">297</a></td><td><span class="gap">+6.1%</span></td></tr>
+<tr><th scope="row">9</th><td class="num lb">378</td><td class="cl"></td><td class="num best"><a href="#0019-bi-d9">406</a></td><td><span class="gap">+7.4%</span></td><td class="num lb">630</td><td class="cl"></td><td class="num best"><a href="#0026-uni-d9">656</a></td><td><span class="gap">+4.1%</span></td></tr>
 </tbody></table></div>
 <p class="muted">Lower bounds: max<sub><i>m</i></sub> C(<i>d</i>,<i>m</i>)&lceil;<i>m</i>/2&rceil; (bidirectional) and
 <i>d</i>&middot;C(<i>d</i>&minus;1,&lfloor;(<i>d</i>&minus;1)/2&rfloor;) (unidirectional), unless a larger bound has
